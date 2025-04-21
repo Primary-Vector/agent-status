@@ -209,7 +209,7 @@ Task trackers can leverage agent data:
 
 1. **Reading the file**: Applications should read the file periodically (e.g., every 0.5-2 seconds) and check for modifications before parsing.
 
-2. **File changes**: Agents should update the file atomically to avoid partial reads.
+2. **File changes**: Agents should update the file atomically to avoid partial reads, care should be taken to keep values in the file that may be written outside of the agent's context, like project details.
 
 3. **Missing values**: Applications should handle missing keys gracefully and use reasonable defaults.
 
