@@ -4,11 +4,63 @@
 
 The `AGENT_STATUS` file is a simple, standardized format for AI agents to communicate their status to the development environment and optionally after a task is completed. This allows terminals, IDEs, editors, and other tools to display relevant information about AI agents working in a project.
 
-It's meant to be simple, agent/tool-agnostic and file-based so it can be versioned, read by any tool or script on the system, or with the current terminal or editor.
+It's meant to be simple, agent/tool-agnostic and file-based so it can be versioned, read by any tool on the system, or the current terminal or editor.
 
 If desired, the file can be checked in with completed work for later review, parsing metrics or tags as part of CI pipeline. 
 
-### Example Uses
+## Examples
+
+Below are example `AGENT_STATUS` files for common use cases:
+
+### 🛠 Example 1: Refactor Agent Working on Auth Module
+```
+AGENT_NAME=Auth Refactorer
+AGENT_TYPE=Claude-3.5-Sonnet
+STATUS=working
+STATUS_TEXT=Refactoring login flow
+STATUS_COLOR=#3498db
+STATUS_EMOJI=🛠️
+PROGRESS=40
+TASK_TYPE=refactor
+FILES_MODIFIED=src/auth.js,src/login.js
+BRANCH=feature/refactor-auth
+PROJECT_NAME=MyWebApp
+```
+
+### 🧪 Example 2: Testing Agent Waiting for Input
+```
+AGENT_NAME=TestBot
+AGENT_TYPE=OpenAI-GPT-4
+STATUS=waiting
+WAITING_FOR=user_input
+STATUS_TEXT=Waiting for test case approval
+STATUS_COLOR=#f1c40f
+STATUS_EMOJI=⏳
+TASK_TYPE=code-gen
+TASK_DESCRIPTION=Generate unit tests for payment module
+INPUT_TYPE=code
+PROJECT_NAME=PaymentsAPI
+```
+
+### ✅ Example 3: Completed Task Summary with Token Usage
+```
+AGENT_NAME=Bug Finder
+AGENT_TYPE=Gemini-Pro
+STATUS=complete
+STATUS_TEXT=Finished static analysis
+STATUS_DETAIL=Found 3 potential null dereferences
+STATUS_COLOR=#2ecc71
+STATUS_EMOJI=✅
+PROGRESS=100
+TASK_TYPE=review
+TOKEN_USAGE=9321
+API_CALLS=6
+COST=$0.19
+FILES_MODIFIED=src/utils.js
+PROJECT_NAME=InventoryService
+```
+
+### Example Consumers
 - AGENT_STATUS can be read by a terminal and shown within its tabs for developers managing multiple local agents in multiple tabs/windows
 - For human interaction it can be piped into a chat window for quickly gaining context to an agent's current question or request for approval
 - Can be checked in at the end of work to summarize the task, how many tokens were spent and give overall status
@@ -155,7 +207,7 @@ Task trackers can leverage agent data:
 
 ## Implementation Guidelines
 
-1. **Reading the file**: Applications should read the file periodically (e.g., every 0.5-2 seconds) or monitor the modification timestamp and check for modifications before parsing.
+1. **Reading the file**: Applications should read the file periodically (e.g., every 0.5-2 seconds) and check for modifications before parsing.
 
 2. **File changes**: Agents should update the file atomically to avoid partial reads.
 
@@ -165,3 +217,6 @@ Task trackers can leverage agent data:
 
 5. **Security**: The file should only contain non-sensitive information. No credentials or private data.
 
+
+
+---
